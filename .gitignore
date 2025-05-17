@@ -1,0 +1,23 @@
+# Python virtual environment
+flask-backend/.venv/
+
+# Flask compiled files
+__pycache__/
+*.pyc
+
+# Node modules
+react-frontend/node_modules/
+
+# Environment files
+react-frontend/.env
+
+# Vite cache
+react-frontend/.vite/
+
+# Log files
+*.log
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
