@@ -1,42 +1,31 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 import random
-import string
 
 app = Flask(__name__)
+CORS(app)  # 👈 enables CORS on all routes
 
 
-@app.route('/healthz', methods=['GET'])
-def health_check():
-    return jsonify(status='ok'), 200
+@app.route("/healthz")
+def healthz():
+    return "OK"
 
 
-@app.route('/data1', methods=['GET'])
-def get_data1():
-    # Generate a random JSON structure
-    data = {
-        'id': ''.join(random.choices(string.ascii_lowercase + string.digits, k=8)),
-        'value': random.randint(1, 100),
-        'tags': random.sample(['alpha', 'beta', 'gamma', 'delta', 'epsilon'], k=3)
-    }
-    return jsonify(data)
+@app.route("/data1")
+def data1():
+    return jsonify({
+        "id": random.randint(1, 100),
+        "name": "Random Data 1"
+    })
 
 
-@app.route('/data2', methods=['GET'])
-def get_data2():
-    # Generate another random JSON structure
-    items = []
-    for _ in range(random.randint(2, 5)):
-        items.append({
-            'name': ''.join(random.choices(string.ascii_lowercase, k=5)),
-            'score': round(random.random() * 10, 2)
-        })
-    response = {
-        'count': len(items),
-        'items': items
-    }
-    return jsonify(response)
+@app.route("/data2")
+def data2():
+    return jsonify({
+        "timestamp": random.random(),
+        "status": "Generated from Flask"
+    })
 
 
-if __name__ == '__main__':
-    # Listen on all interfaces to work inside Docker
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000, debug=True)

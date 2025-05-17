@@ -5,7 +5,7 @@ export default function Home() {
   const [data1, setData1] = useState(null);
 
   useEffect(() => {
-    axios.get(`${import.meta.env.API_BASE_URL}/data1`)
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/data1`)
       .then(res => setData1(res.data))
       .catch(err => console.error(err));
   }, []);
