@@ -2,10 +2,15 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: app-ingress
-  # annotations:
-  #   nginx.ingress.kubernetes.io/rewrite-target: /
+  annotations:
+    # nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - localhost
+    secretName: tls-secret
   rules:
   - host: localhost
     http:
@@ -31,8 +36,23 @@ spec:
             name: flask-backend
             port:
               number: 8000
-      - path: /
-        pathType: Prefix
+
+      - path: /assets/(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: react-frontend
+            port:
+              number: 80
+      - path: /vite.svg
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: react-frontend
+            port:
+              number: 80
+      - path: /(.*)
+        pathType: ImplementationSpecific
         backend:
           service:
             name: react-frontend
